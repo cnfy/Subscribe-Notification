@@ -1,0 +1,8 @@
+venv
+.idea/
+__pycache__/
+tmp
+tmp/app.log
+tmp/search.txt
+.env
+test.txt
