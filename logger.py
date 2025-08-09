@@ -64,6 +64,7 @@ def upload_log_to_pcloud():
 def download_file_from_pcloud():
     REMOTE_PATH = ['/NotificationLogs/app.log','/NotificationLogs/search.txt','/NotificationLogs/tasks.json']
     token = get_token()
+    print(token)
     for path in REMOTE_PATH:
         save_path = os.path.join('/tmp', os.path.basename(path))
         url = 'https://api.pcloud.com/getfilelink'
