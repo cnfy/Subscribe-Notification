@@ -15,16 +15,32 @@ ACCESS_TOKEN = os.getenv('PCLOUD_ACCESS_TOKEN')  # 从环境变量读取
 logger = logging.getLogger('render_logger')
 logger.setLevel(logging.INFO)
 
+
+from datetime import datetime, timedelta, timezone
+
+# 定义 UTC+9 时区（JST）
+JST = timezone(timedelta(hours=9))
+
+# 自定义 Formatter，格式化时间为 JST
+class JSTFormatter(logging.Formatter):
+    def formatTime(self, record, datefmt=None):
+        dt = datetime.fromtimestamp(record.created, tz=JST)
+        if datefmt:
+            return dt.strftime(datefmt)
+        else:
+            return dt.isoformat()
+
+
 # 避免重复添加 handler
 if not logger.handlers:
     file_handler = logging.FileHandler(LOG_FILE,encoding='utf-8')
-    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    formatter = JSTFormatter('%(asctime)s - %(levelname)s - %(message)s')
     file_handler.setFormatter(formatter)
     logger.addHandler(file_handler)
 
     # 控制台输出
     console_handler = logging.StreamHandler()
-    console_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    console_formatter = JSTFormatter('%(asctime)s - %(levelname)s - %(message)s')
     console_handler.setFormatter(console_formatter)
     logger.addHandler(console_handler)
 
