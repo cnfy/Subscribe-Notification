@@ -76,7 +76,7 @@ def edit_task(task_id):
 
 
 def updateTaskStatus(task_id,new_value):
-    path = 'tmp/tasks.json'
+    path = '/tmp/tasks.json'
     if os.path.exists(path) and os.path.getsize(path) > 0:
         with open(path, 'r', encoding='utf-8') as f:
             data_dict = json.load(f)
