@@ -24,11 +24,8 @@ JST = timezone(timedelta(hours=9))
 # 自定义 Formatter，格式化时间为 JST
 class JSTFormatter(logging.Formatter):
     def formatTime(self, record, datefmt=None):
-        dt = datetime.fromtimestamp(record.created, tz=JST)
-        if datefmt:
-            return dt.strftime(datefmt)
-        else:
-            return dt.isoformat()
+        dt = datetime.fromtimestamp(record.created, JST)
+        return dt.strftime("%Y-%m-%d %H:%M:%S")  # 只显示日期和时间，不显示时区
 
 
 # 避免重复添加 handler

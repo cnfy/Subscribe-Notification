@@ -1,5 +1,5 @@
 import time
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 import requests
 from bs4 import BeautifulSoup
 from logger import logger
@@ -11,7 +11,7 @@ headers = {
 
 
 def getTime():
-    return datetime.now().strftime("%Y-%m-%d %H:%M")
+    return datetime.now(timezone(timedelta(hours=9))).strftime("%Y-%m-%d %H:%M")
 
 def getValue(url, xpath):
     response = requests.get(url, headers=headers)
