@@ -460,3 +460,18 @@ html.sidebar-collapsed .sidebar .subtitle {
   border-radius: 12px;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
+
+.btn.loading {
+  pointer-events: none;
+  opacity: 0.6;
+  position: relative;
+}
+
+.btn.loading::after {
+  content: "⏳";
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+}

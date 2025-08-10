@@ -2,19 +2,17 @@ document.addEventListener('DOMContentLoaded', () => {
   // 折叠侧边栏逻辑
   const sidebar = document.querySelector('.sidebar');
   const toggleBtn = document.querySelector('.toggle-btn');
-    // 初始化状态
+
   if (localStorage.getItem('sidebarCollapsed') === 'true') {
     document.documentElement.classList.add('sidebar-collapsed');
   }
 
-  // 切换状态
   toggleBtn.addEventListener('click', () => {
     const html = document.documentElement;
     const isCollapsed = html.classList.toggle('sidebar-collapsed');
     localStorage.setItem('sidebarCollapsed', isCollapsed);
   });
 
-  // 页面加载完成后移除 no-animate
   document.documentElement.classList.remove('no-animate');
 
   // 创建任务弹窗逻辑
@@ -51,6 +49,8 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       const taskId = document.getElementById("editTaskId").value;
       const formData = new FormData(editForm);
+      const submitBtn = editForm.querySelector("button[type='submit']");
+      submitBtn.classList.add("loading");
 
       fetch(`/edit/${taskId}`, {
         method: "POST",
@@ -61,6 +61,22 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     };
   }
+
+  // 创建任务表单 loading 效果
+  const createForm = document.querySelector(".task-form[action='/create']");
+  if (createForm) {
+    createForm.addEventListener("submit", function () {
+      const submitBtn = createForm.querySelector("button[type='submit']");
+      submitBtn.classList.add("loading");
+    });
+  }
+
+  // 启动/停止按钮添加 loading 效果
+  document.querySelectorAll(".btn.small").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      btn.classList.add("loading");
+    });
+  });
 
   // 自动高亮当前导航链接
   const links = document.querySelectorAll('.nav a');
@@ -104,14 +120,12 @@ window.addEventListener("load", function () {
 function openEditModal(id, name, url, xpath, email) {
   const editModal = document.getElementById("editModal");
 
-  // 设置表单字段值
   document.getElementById("editTaskId").value = id;
   document.getElementById("editName").value = name;
   document.getElementById("editUrl").value = url;
   document.getElementById("editXpath").value = xpath;
   document.getElementById("editEmail").value = email;
 
-  // 显示弹窗
   editModal.style.display = "block";
 }
 
@@ -131,10 +145,7 @@ if (detailModal && closeDetailBtn) {
 // 点击任务卡片弹出详情
 document.querySelectorAll(".task-card").forEach(card => {
   card.addEventListener("click", function (e) {
-    // 排除创建卡片
     if (card.classList.contains("create-card")) return;
-
-    // 避免点击按钮时触发弹窗
     if (e.target.closest(".card-actions")) return;
 
     document.getElementById("detailName").textContent = card.dataset.name;
