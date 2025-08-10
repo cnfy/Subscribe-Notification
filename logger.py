@@ -26,8 +26,6 @@ if not logger.handlers:
 def get_token():
     USERNAME = os.getenv('PCLOUD_USERNAME')
     PASSWORD = os.getenv('PCLOUD_PASSWORD')
-    print('username:', USERNAME)
-    print('password:', PASSWORD)
     url = "https://api.pcloud.com/login"
     params = {
         "username": USERNAME,
@@ -35,10 +33,13 @@ def get_token():
     }
 
     response = requests.get(url, params=params)
+    import pprint
+    pprint.pprint(response)
+    print(response.status_code)
+    print(response.text)
     data = response.json()
 
     auth_token = data.get("auth")
-    print(auth_token)
     return auth_token
 
 def upload_log_to_pcloud():
@@ -66,7 +67,6 @@ def upload_log_to_pcloud():
 def download_file_from_pcloud():
     REMOTE_PATH = ['/NotificationLogs/app.log','/NotificationLogs/search.txt','/NotificationLogs/tasks.json']
     token = get_token()
-    print(token)
     for path in REMOTE_PATH:
         save_path = os.path.join('/tmp', os.path.basename(path))
         url = 'https://api.pcloud.com/getfilelink'
