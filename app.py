@@ -88,7 +88,12 @@ def updateTaskStatus(task_id,new_value):
             data_dict = json.load(f)
     else:
         data_dict = {}
+
+    if data_dict.get(task_id):
+        pass
+    else:
         data_dict[task_id] = {}
+
     if new_value:
         data_dict[task_id].update(new_value)
         with open(path, 'w', encoding='utf-8') as f:
