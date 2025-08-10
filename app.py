@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 import uuid
 from apscheduler.schedulers.background import BackgroundScheduler
-from logger import upload_log_to_pcloud, download_file_from_pcloud
+from logger import upload_log_to_pcloud, download_file_from_pcloud, update_json_to_pcloud
 from main import start
 import json
 import os
@@ -90,6 +90,7 @@ def updateTaskStatus(task_id,new_value):
     else:
         with open(path, 'w', encoding='utf-8') as f:
             f.write('')
+    update_json_to_pcloud()
         # 写入更新后的数据
 def load_tasks_from_file():
     path = '/tmp/tasks.json'

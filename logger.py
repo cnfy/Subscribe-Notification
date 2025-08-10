@@ -60,6 +60,25 @@ def upload_log_to_pcloud():
         except Exception as e:
             logger.error(f"上传异常: {e}")
 
+def update_json_to_pcloud():
+    token = get_token()
+    filetmp = os.path.join(LOG_DIR, 'tasks.json')
+    try:
+        logger.info("开始上传日志到 pCloud")
+        with open(filetmp, 'rb') as f:
+            files = {'file': f}
+            data = {
+                'auth': token,
+                'folderid': 27481362375  # 上传到目录
+            }
+            response = requests.post(PCLOUD_UPLOAD_URL, files=files, data=data)
+            result = response.json()
+            if result.get('result') == 0:
+                logger.info("日志上传成功")
+            else:
+                logger.error(f"上传失败: {result}")
+    except Exception as e:
+        logger.error(f"上传异常: {e}")
 
 def download_file_from_pcloud():
     REMOTE_PATH = ['/NotificationLogs/app.log','/NotificationLogs/search.txt','/NotificationLogs/tasks.json']
