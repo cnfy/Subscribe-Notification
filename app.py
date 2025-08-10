@@ -96,11 +96,11 @@ def updateTaskStatus(task_id,new_value):
 
     if new_value:
         data_dict[task_id].update(new_value)
-        with open(path, 'w', encoding='utf-8') as f:
-            json.dump(data_dict, f, ensure_ascii=False, indent=2)
     else:
-        with open(path, 'w', encoding='utf-8') as f:
-            f.write('')
+        del data_dict[task_id]
+
+    with open(path, 'w', encoding='utf-8') as f:
+        json.dump(data_dict, f, ensure_ascii=False, indent=2)
     update_json_to_pcloud()
         # 写入更新后的数据
 def load_tasks_from_file():
