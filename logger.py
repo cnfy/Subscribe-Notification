@@ -26,19 +26,14 @@ if not logger.handlers:
 def get_token():
     USERNAME = os.getenv('PCLOUD_USERNAME')
     PASSWORD = os.getenv('PCLOUD_PASSWORD')
-    url = "https://eapi.pcloud.com/login"
+    url = 'https://api.pcloud.com/userinfo'
     params = {
         "username": USERNAME,
-        "password": PASSWORD
+        "password": PASSWORD,
+        'getauth': 1
     }
 
     response = requests.get(url, params=params)
-    import pprint
-    pprint.pprint(response)
-    print(response.status_code)
-    print(response.text)
-    ip = requests.get("https://api.ipify.org").text
-    print("Render server IP:", ip)
     data = response.json()
 
     auth_token = data.get("auth")
