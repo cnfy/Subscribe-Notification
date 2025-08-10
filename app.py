@@ -110,8 +110,8 @@ def load_tasks_from_file():
             except json.JSONDecodeError:
                 print("任务文件格式错误，无法加载")
 
-download_file_from_pcloud()
-load_tasks_from_file()
+# download_file_from_pcloud()
+# load_tasks_from_file()
 
 if __name__ == '__main__':
 
