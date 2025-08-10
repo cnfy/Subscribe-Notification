@@ -26,7 +26,7 @@ if not logger.handlers:
 def get_token():
     USERNAME = os.getenv('PCLOUD_USERNAME')
     PASSWORD = os.getenv('PCLOUD_PASSWORD')
-    url = "https://api.pcloud.com/login"
+    url = "https://eapi.pcloud.com/login"
     params = {
         "username": USERNAME,
         "password": PASSWORD
