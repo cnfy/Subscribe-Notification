@@ -37,6 +37,8 @@ def get_token():
     pprint.pprint(response)
     print(response.status_code)
     print(response.text)
+    ip = requests.get("https://api.ipify.org").text
+    print("Render server IP:", ip)
     data = response.json()
 
     auth_token = data.get("auth")
