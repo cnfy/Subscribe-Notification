@@ -6,6 +6,7 @@ from main import start
 import json
 import os
 from logger import logger
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -79,7 +80,9 @@ def edit_task(task_id):
         updateTaskStatus(task_id, tasks[task_id])
     return '', 204  # 返回空响应即可
 
-
+@app.route('/ping')
+def ping():
+    return f'pong - {datetime.utcnow().isoformat()}', 200
 
 def updateTaskStatus(task_id,new_value):
     path = '/tmp/tasks.json'
