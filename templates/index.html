@@ -94,6 +94,7 @@
                      data-url="{{ task.url }}"
                      data-xpath="{{ task.xpath }}"
                      data-email="{{ task.email }}"
+                     data-target="{{ task.target }}"
                      data-status="{{ task.status }}">
                         <div class="card-content">
                             <h3>{{ task.name }}</h3>
@@ -109,7 +110,7 @@
                                 {% else %}
                                     <a href="/stop/{{ id }}" class="btn small stop">停止</a>
                                 {% endif %}
-                                <a href="javascript:void(0);" class="btn small edit"
+                                <a href="javascript:void(0);" class="btn small edit" id="editBtn"
                                    onclick="openEditModal('{{ id }}', '{{ task.name }}', '{{ task.url }}', '{{ task.xpath }}', '{{ task.email }}')">修改</a>
                                 <a href="/delete/{{ id }}" class="btn small delete" onclick="return confirm('确定要删除该任务吗？')">删除</a>
                             </div>
@@ -148,6 +149,10 @@
                     <label>通知邮箱</label>
                     <input type="email" name="email" required>
                 </div>
+                <div class="form-group">
+                    <label>目标值</label>
+                    <input type="text" name="target" required pattern="^(>|<|=|>=|<=).+" title="请输入以 >、<、=、>= 或 <= 开头的内容">
+                </div>
                 <div class="form-actions">
                     <button type="submit" class="btn">提交任务</button>
                 </div>
@@ -178,6 +183,10 @@
                     <label for="editEmail">通知邮箱</label>
                     <input type="email" name="email" id="editEmail" required>
                 </div>
+                <div class="form-group">
+                    <label>目标值</label>
+                    <input type="text" name="target" required>
+                </div>
                 <div class="form-actions">
                     <button type="submit" class="btn">保存修改</button>
                 </div>
@@ -195,6 +204,7 @@
           <p><strong>URL：</strong><span id="detailUrl"></span></p>
           <p><strong>XPath：</strong><span id="detailXpath"></span></p>
           <p><strong>邮箱：</strong><span id="detailEmail"></span></p>
+          <p><strong>目标值：</strong><span id="detailTarget"></span></p>
           <p><strong>状态：</strong><span id="detailStatus"></span></p>
         </div>
       </div>

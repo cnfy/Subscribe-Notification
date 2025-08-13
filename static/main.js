@@ -34,12 +34,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const editModal = document.getElementById("editModal");
   const closeEditBtn = document.getElementById("closeEditModal");
   const editForm = document.getElementById("editForm");
+  const editBtn = document.getElementById("editBtn")
+
+  function closeEditModal() {
+    editModal.style.display = "none";
+    if (editBtn) {
+      editBtn.classList.remove("loading");
+    }
+  }
 
   if (closeEditBtn && editModal) {
-    closeEditBtn.onclick = () => editModal.style.display = "none";
+    closeEditBtn.onclick = closeEditModal;
     window.addEventListener('click', (event) => {
       if (event.target === editModal) {
-        editModal.style.display = "none";
+        closeEditModal();
       }
     });
   }
@@ -152,6 +160,7 @@ document.querySelectorAll(".task-card").forEach(card => {
     document.getElementById("detailUrl").textContent = card.dataset.url;
     document.getElementById("detailXpath").textContent = card.dataset.xpath;
     document.getElementById("detailEmail").textContent = card.dataset.email;
+    document.getElementById("detailTarget").textContent = card.dataset.target;
     document.getElementById("detailStatus").textContent = card.dataset.status;
 
     detailModal.style.display = "block";

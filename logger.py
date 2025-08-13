@@ -9,7 +9,6 @@ LOG_FILE = os.path.join(LOG_DIR, 'app.log')
 
 # pCloud 配置
 PCLOUD_UPLOAD_URL = 'https://api.pcloud.com/uploadfile'
-ACCESS_TOKEN = os.getenv('PCLOUD_ACCESS_TOKEN')  # 从环境变量读取
 
 # 初始化 logger
 logger = logging.getLogger('render_logger')
@@ -99,7 +98,11 @@ def update_json_to_pcloud():
         logger.error(f"上传异常: {e}")
 
 def download_file_from_pcloud():
-    REMOTE_PATH = ['/NotificationLogs/app.log','/NotificationLogs/search.txt','/NotificationLogs/tasks.json']
+    if os.getenv('DEV'):
+        REMOTE_PATH = ['/NotificationLogs/test/app.log', '/NotificationLogs/test/search.txt',
+                       '/NotificationLogs/test/tasks.json']
+    else:
+        REMOTE_PATH = ['/NotificationLogs/app.log','/NotificationLogs/search.txt','/NotificationLogs/tasks.json']
     token = get_token()
     for path in REMOTE_PATH:
         save_path = os.path.join('/tmp', os.path.basename(path))

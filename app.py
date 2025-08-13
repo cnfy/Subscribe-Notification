@@ -30,11 +30,12 @@ def create_task():
         'url': request.form['url'],
         'xpath': request.form['xpath'],
         'email': request.form['email'],
+        'target': request.form['target'],
         'status': 'running'
     }
     updateTaskStatus(task_id,tasks[task_id])
-    scheduler.add_job(start, 'interval', minutes=1, args=[request.form['url'], request.form['xpath'], request.form['email']], id=task_id)
-    logger.info(f'任务ID：{task_id}，任务已开始')
+    scheduler.add_job(start, 'interval', minutes=1, args=[request.form['url'], request.form['xpath'], request.form['email'], request.form['target'], request.form['name'], task_id], id=task_id)
+    logger.info(f'任务ID：{task_id}-任务名称:{tasks[task_id]["name"]}，任务已开始')
     return redirect(url_for('index'))
 
 @app.route('/start/<task_id>')
@@ -43,7 +44,7 @@ def start_task(task_id):
         tasks[task_id]['status'] = 'running'
         scheduler.resume_job(task_id)
         updateTaskStatus(task_id, {'status':'running'})
-        logger.info(f'任务ID：{task_id}，任务已启动')
+        logger.info(f'任务ID：{task_id}-任务名称:{tasks[task_id]["name"]}，任务已启动')
     return redirect(url_for('index'))
 
 @app.route('/stop/<task_id>')
@@ -52,7 +53,7 @@ def stop_task(task_id):
         tasks[task_id]['status'] = 'stopped'
         scheduler.pause_job(task_id)
         updateTaskStatus(task_id, {'status': 'stopped'})
-        logger.info(f'任务ID：{task_id}，任务已暂停')
+        logger.info(f'任务ID：{task_id}-任务名称:{tasks[task_id]["name"]}，任务已暂停')
     return redirect(url_for('index'))
 
 @app.route('/delete/<task_id>')
@@ -61,7 +62,7 @@ def delete_task(task_id):
         del tasks[task_id]
         scheduler.remove_job(task_id)
         updateTaskStatus(task_id, {})
-        logger.info(f'任务ID：{task_id}，任务已删除')
+        logger.info(f'任务ID：{task_id}-任务名称:{tasks[task_id]["name"]}，任务已删除')
     return redirect(url_for('index'))
 
 @app.route('/edit/<task_id>', methods=['POST'])
@@ -73,10 +74,11 @@ def edit_task(task_id):
         tasks[task_id]['url'] = request.form['url']
         tasks[task_id]['xpath'] = request.form['xpath']
         tasks[task_id]['email'] = request.form['email']
+        tasks[task_id]['target'] = request.form['target']
         tasks[task_id]['status'] = 'running'
         scheduler.add_job(start, 'interval', minutes=1,
-                          args=[request.form['url'], request.form['xpath'], request.form['email']], id=task_id)
-        logger.info(f'任务ID：{task_id}，任务已更新')
+                          args=[request.form['url'], request.form['xpath'], request.form['email'], request.form['target'], request.form['name'], task_id], id=task_id)
+        logger.info(f'任务ID：{task_id}-任务名称:{tasks[task_id]["name"]}，任务已更新')
         updateTaskStatus(task_id, tasks[task_id])
     return '', 204  # 返回空响应即可
 
@@ -119,15 +121,17 @@ def load_tasks_from_file():
                             start,
                             'interval',
                             minutes=1,
-                            args=[task_info['url'], task_info['xpath'], task_info['email']],
+                            args=[task_info['url'], task_info['xpath'], task_info['email'],task_info['target'], task_info['name'], task_id],
                             id=task_id
                         )
             except json.JSONDecodeError:
                 logger.error("任务文件格式错误，无法加载")
 
+from dotenv import load_dotenv
+load_dotenv()
+
 download_file_from_pcloud()
 load_tasks_from_file()
 
 if __name__ == '__main__':
-
     app.run(debug=True)
