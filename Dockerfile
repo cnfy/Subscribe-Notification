@@ -1,5 +1,5 @@
 # 使用官方 Playwright 镜像（包含 Python 和浏览器）
-FROM mcr.microsoft.com/playwright/python:v1.48.0-jammy
+FROM mcr.microsoft.com/playwright/python:v1.48.0
 
 # 设置工作目录
 WORKDIR /app
