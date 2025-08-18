@@ -50,6 +50,9 @@ def getValueV2(url, xpath):
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
+        page.set_extra_http_headers({
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/114.0 Safari/537.36"
+        })
         page.goto(url, wait_until="domcontentloaded")
         if is_xpath(xpath):
             newxpath = xpath_to_css(xpath)
