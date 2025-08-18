@@ -6,7 +6,8 @@ WORKDIR /app
 
 # 复制项目文件到容器中
 COPY . .
-
+ENV TZ=Asia/Tokyo
+RUN apt-get update && apt-get install -y tzdata
 # 安装 Python 依赖
 RUN pip install --no-cache-dir -r requirements.txt
 
