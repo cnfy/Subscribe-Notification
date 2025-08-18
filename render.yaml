@@ -5,5 +5,8 @@ services:
     plan: free
     buildCommand: |
       pip install -r requirements.txt
-      playwright install
+      python -m playwright install
     startCommand: gunicorn app:app
+    envVars:
+      - key: PLAYWRIGHT_BROWSERS_PATH
+        value: /tmp/playwright
