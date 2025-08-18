@@ -1,3 +1,4 @@
+import os
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -5,20 +6,21 @@ from email.mime.multipart import MIMEMultipart
 
 # Gmail 登录信息
 sender_email = "sen.yu1217@gmail.com"
-app_password = "oyli brko ydlm ejth"  # 不是你的 Gmail 密码！
+app_password = os.getenv("MAIL_PASSWORD")  # 不是你的 Gmail 密码！
 
 # 创建邮件内容
-message = MIMEMultipart()
-message["From"] = sender_email
-message["Subject"] = "フロール新川崎募集の知らせ"
+
 
 
 
 # 连接 Gmail SMTP 服务器并发送邮件
-def send_gmail(time=None,receiver_email=None):
+def send_gmail(time=None,receiver_email=None, task_name=None, url=None):
+    message = MIMEMultipart()
+    message["From"] = sender_email
+    message["Subject"] = f"【知微】Microsight-{task_name}監視条件を満たすの知らせ"
     message["To"] = receiver_email
     # 邮件正文
-    body = f"当前时间：{time}\n\nフロール新川崎有新房间开始募集，请尽快前往确认。\n\n物件网址：https://www.kousha-chintai.com/search/list.php?dcd=K120162000"
+    body = f"当前时间：{time}\n\n任务名称：{task_name}\n检测值已符合条件，请尽快前往确认。\n\n检测网址：{url}"
     message.attach(MIMEText(body, "plain"))
 
 
