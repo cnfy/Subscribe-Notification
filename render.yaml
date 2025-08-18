@@ -3,7 +3,7 @@ services:
     name: Subscribe Notification
     env: python
     plan: free
-    buildCommand: |
+    buildCommand:
       pip install -r requirements.txt && python -m playwright install
     startCommand: gunicorn app:app
     envVars:
