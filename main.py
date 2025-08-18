@@ -53,13 +53,12 @@ def getValueV2(url, xpath):
         page.set_extra_http_headers({
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/114.0 Safari/537.36"
         })
-        page.goto(url, wait_until="domcontentloaded")
+        page.goto(url, wait_until="domcontentloaded", timeout=60000)
         if is_xpath(xpath):
             newxpath = xpath_to_css(xpath)
         else:
             newxpath = xpath
         page.wait_for_selector(newxpath)
-        page.wait_for_timeout(3000)  # 等待3秒加载
         html = page.content()
         soup = BeautifulSoup(html, 'html.parser')
         target = soup.select_one(newxpath)
