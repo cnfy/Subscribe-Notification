@@ -14,6 +14,7 @@ app = Flask(__name__)
 scheduler = BackgroundScheduler()
 scheduler.add_job(upload_log_to_pcloud, 'interval', minutes=15)
 scheduler.start()
+os.environ["PLAYWRIGHT_BROWSERS_PATH"] = "/tmp/playwright"
 
 # 模拟任务存储（可替换为数据库）
 tasks = {}
