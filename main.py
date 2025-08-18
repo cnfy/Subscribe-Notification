@@ -50,15 +50,16 @@ def getValueV2(url, xpath):
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
-        page.goto(url)
+        page.goto(url, wait_until="domcontentloaded")
+        if is_xpath(xpath):
+            newxpath = xpath_to_css(xpath)
+        else:
+            newxpath = xpath
+        page.wait_for_selector(newxpath)
         page.wait_for_timeout(3000)  # 等待3秒加载
         html = page.content()
         soup = BeautifulSoup(html, 'html.parser')
-        if is_xpath(xpath):
-            newxpath = xpath_to_css(xpath)
-            target = soup.select_one(newxpath)
-        else:
-            target = soup.select_one(xpath)
+        target = soup.select_one(newxpath)
         if target:
             browser.close()
             return target.text.strip()
